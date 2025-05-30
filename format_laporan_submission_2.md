@@ -65,4 +65,13 @@ Pendekatan yang digunakan adalah:
 Fungsi utama yang dibuat:
 ```python
 def recommend_songs(song_title, df_scaled, df_original, top_n=10):
+```
+Jika mode "Judul Lagu":
+Sistem mengambil fitur numerik lagu yang dipilih user (seperti bpm, nrgy, dnce, dll).
+
+Lalu menghitung cosine similarity terhadap semua lagu lain di dataset.
+
+Output: 10 lagu yang paling mirip dari segi karakteristik konten (energi, tempo, suasana, dll) — meskipun artis atau judulnya berbeda.
+
+
     ...
