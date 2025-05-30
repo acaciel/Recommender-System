@@ -66,6 +66,3 @@ Fungsi utama yang dibuat:
 ```python
 def recommend_songs(song_title, df_scaled, df_original, top_n=10):
     ...
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
