@@ -1,74 +1,73 @@
 # Laporan Proyek Machine Learning - Anissa Shanniyah Aprilia
 
+# Laporan Proyek Machine Learning - Sistem Rekomendasi Lagu
+
 ## Project Overview
 
-Pada bagian ini, Kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
+Musik adalah bagian penting dalam kehidupan sehari-hari, dan dengan banyaknya lagu yang tersedia secara digital, pengguna kerap kesulitan menemukan lagu yang sesuai dengan selera mereka. Untuk mengatasi hal tersebut, sistem rekomendasi lagu menjadi solusi efektif dalam memberikan pengalaman mendengarkan yang lebih personal.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa dan bagaimana masalah tersebut harus diselesaikan
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
-- Format Referensi dapat mengacu pada penulisan sitasi [IEEE](https://journals.ieeeauthorcenter.ieee.org/wp-content/uploads/sites/7/IEEE_Reference_Guide.pdf), [APA](https://www.mendeley.com/guides/apa-citation-guide/) atau secara umum seperti [di sini](https://penerbitdeepublish.com/menulis-buku-membuat-sitasi-dengan-mudah/)
-- Sumber yang bisa digunakan [Scholar](https://scholar.google.com/)
+Proyek ini bertujuan membangun sistem rekomendasi lagu berdasarkan kemiripan fitur audio seperti energi, tempo, dan danceability dari lagu-lagu populer. Pendekatan yang digunakan adalah content-based filtering menggunakan cosine similarity antar fitur numerikal.
 
 ## Business Understanding
 
-Pada bagian ini, Anda perlu menjelaskan proses klarifikasi masalah.
-
-Bagian laporan ini mencakup:
-
 ### Problem Statements
 
-Menjelaskan pernyataan masalah:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+- Bagaimana cara merekomendasikan lagu yang mirip dengan lagu favorit pengguna berdasarkan fitur audio?
+- Bagaimana membuat sistem yang mampu menyarankan lagu-lagu populer lainnya dengan karakteristik yang serupa?
 
 ### Goals
 
-Menjelaskan tujuan proyek yang menjawab pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
+- Mengembangkan sistem rekomendasi lagu berdasarkan kemiripan fitur numerik yang tersedia dalam dataset.
+- Menyediakan antarmuka sederhana bagi pengguna untuk memilih lagu dan melihat daftar lagu yang direkomendasikan.
 
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
+### Solution Statements
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Menambahkan bagian “Solution Approach” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
-
-    ### Solution statements
-    - Mengajukan 2 atau lebih solution approach (algoritma atau pendekatan sistem rekomendasi).
+- Menggunakan pendekatan **content-based filtering** dengan menghitung kemiripan cosine antar fitur numerikal dari lagu.
+- Menyediakan fungsi rekomendasi yang menerima input judul lagu dan mengeluarkan daftar lagu yang mirip.
+- Membangun antarmuka pengguna menggunakan `ipywidgets` agar rekomendasi bisa dicoba langsung di notebook.
 
 ## Data Understanding
-Paragraf awal bagian ini menjelaskan informasi mengenai jumlah data, kondisi data, dan informasi mengenai data yang digunakan. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
 
-Selanjutnya, uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
+Dataset yang digunakan adalah `top10s.csv`, yang berisi daftar lagu-lagu populer dari tahun 2010 hingga 2019. Dataset ini mencakup berbagai fitur audio yang diperoleh dari platform streaming seperti Spotify.
 
-Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
-- accepts : merupakan jenis pembayaran yang diterima pada restoran tertentu.
-- cuisine : merupakan jenis masakan yang disajikan pada restoran.
-- dst
+Beberapa variabel dalam dataset:
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data beserta insight atau exploratory data analysis.
+- `title`: judul lagu
+- `artist`: nama artis
+- `top genre`: genre utama
+- `year`: tahun rilis
+- `bpm`: beats per minute (tempo lagu)
+- `nrgy`: energi lagu
+- `dnce`: danceability
+- `dB`: loudness (desibel)
+- `live`: live performance score
+- `val`: valence (positivitas lagu)
+- `dur`: durasi lagu dalam detik
+- `acous`, `spch`, `pop`: fitur-fitur audio tambahan
 
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+Langkah-langkah yang dilakukan:
+
+- Melakukan normalisasi pada fitur numerik menggunakan `MinMaxScaler` agar berada dalam skala yang seragam (0–1).
+- Menyiapkan subset fitur numerik (`bpm`, `nrgy`, `dnce`, `val`, `dur`, `acous`, `spch`, `pop`) sebagai dasar penghitungan kemiripan antar lagu.
+
+Normalisasi penting agar tidak ada fitur yang mendominasi dalam penghitungan similarity.
 
 ## Modeling
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menyajikan dua solusi rekomendasi dengan algoritma yang berbeda.
-- Menjelaskan kelebihan dan kekurangan dari solusi/pendekatan yang dipilih.
+Pendekatan yang digunakan adalah:
 
-## Evaluation
-Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
+### Content-Based Filtering
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+- Menggunakan **cosine similarity** untuk mengukur kemiripan antar lagu berdasarkan vektor fitur numerik yang telah dinormalisasi.
+- Input: satu lagu dari daftar lagu populer.
+- Output: 10 lagu yang paling mirip secara audio berdasarkan skor kemiripan tertinggi.
+
+Fungsi utama yang dibuat:
+```python
+def recommend_songs(song_title, df_scaled, df_original, top_n=10):
+    ...
 
 **Rubrik/Kriteria Tambahan (Opsional)**: 
 - Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
