@@ -1,7 +1,5 @@
 # Laporan Proyek Machine Learning - Anissa Shanniyah Aprilia
 
-# Laporan Proyek Machine Learning - Sistem Rekomendasi Lagu
-
 ## Project Overview
 
 Musik adalah bagian penting dalam kehidupan sehari-hari, dan dengan banyaknya lagu yang tersedia secara digital, pengguna kerap kesulitan menemukan lagu yang sesuai dengan selera mereka. Untuk mengatasi hal tersebut, sistem rekomendasi lagu menjadi solusi efektif dalam memberikan pengalaman mendengarkan yang lebih personal.
