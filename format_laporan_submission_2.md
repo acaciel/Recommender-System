@@ -59,19 +59,30 @@ Pendekatan yang digunakan adalah:
 ### Content-Based Filtering
 
 - Menggunakan **cosine similarity** untuk mengukur kemiripan antar lagu berdasarkan vektor fitur numerik yang telah dinormalisasi.
-- Input: satu lagu dari daftar lagu populer.
-- Output: 10 lagu yang paling mirip secara audio berdasarkan skor kemiripan tertinggi.
 
-Fungsi utama yang dibuat:
+Fungsi Rekomendasi berdasarkan lagu:
 ```python
-def recommend_songs(song_title, df_scaled, df_original, top_n=10):
+def recommend_by_title(song_title, df, similarity_matrix, top_n=10):
 ```
-Jika mode "Judul Lagu":
-Sistem mengambil fitur numerik lagu yang dipilih user (seperti bpm, nrgy, dnce, dll).
+Cara Kerja:
+- Sistem mengambil fitur numerik lagu yang dipilih user (seperti bpm, nrgy, dnce, dll).
+- Lalu menghitung cosine similarity terhadap semua lagu lain di dataset.
+- Output: 10 lagu yang paling mirip dari segi karakteristik konten (energi, tempo, suasana, dll) — meskipun artis atau judulnya berbeda.
 
-Lalu menghitung cosine similarity terhadap semua lagu lain di dataset.
+Fungsi Rekomendasi berdasarkan genre:
+```python
+def recommend_by_genre(genre, df, similarity_matrix, top_n=10):
+```
+Cara Kerja:
+- Sistem memilih satu lagu dari genre tersebut.
+- Kemudian mencari lagu-lagu lain yang mirip secara konten dengan lagu itu.
+- Cocok untuk menemukan lagu mirip dari genre favorit.
 
-Output: 10 lagu yang paling mirip dari segi karakteristik konten (energi, tempo, suasana, dll) — meskipun artis atau judulnya berbeda.
-
-
-    ...
+Fungsi Rekomendasi berdasarkan artis:
+```python
+def recommend_by_artist(artist, df, similarity_matrix, top_n=10):
+```
+Cara Kerja:
+- Sistem mengambil semua lagu dari artis yang dipilih, lalu menghitung rata-rata representasi kontennya.
+- Lalu sistem mencari lagu lain yang mirip dengan gaya keseluruhan artis tersebut.
+- Cocok untuk menemukan lagu mirip dengan “cita rasa” lagu-lagu seorang artis.
