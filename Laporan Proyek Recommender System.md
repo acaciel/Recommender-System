@@ -16,19 +16,21 @@ Proyek ini bertujuan membangun sistem rekomendasi lagu berdasarkan kemiripan fit
 ### Goals
 
 - Mengembangkan sistem rekomendasi lagu berdasarkan kemiripan fitur numerik yang tersedia dalam dataset.
-- Menyediakan antarmuka sederhana bagi pengguna untuk memilih lagu dan melihat daftar lagu yang direkomendasikan.
+- Menyediakan interface sederhana bagi pengguna untuk memilih lagu dan melihat daftar lagu yang direkomendasikan.
 
 ### Solution Statements
 
 - Menggunakan pendekatan **content-based filtering** dengan menghitung kemiripan cosine antar fitur numerikal dari lagu.
 - Menyediakan fungsi rekomendasi yang menerima input judul lagu dan mengeluarkan daftar lagu yang mirip.
-- Membangun antarmuka pengguna menggunakan `ipywidgets` agar rekomendasi bisa dicoba langsung di notebook.
+- Membangun user interface menggunakan `ipywidgets` agar rekomendasi bisa dicoba langsung di notebook.
 
 ## Data Understanding
+- Dataset Top Spotify songs from 2010-2019-BY YEAR (https://www.kaggle.com/datasets/leonardopena/top-spotify-songs-from-20102019-by-year?select=top10s.csv)
+- Dataset yang digunakan adalah `top10s.csv`, yang berisi daftar lagu-lagu populer dari tahun 2010 hingga 2019.
+- Jumlah data: Dataset terdiri dari 603 baris dan 15 kolom
+- tidak terdapat missing values, data duplikat
 
-Dataset yang digunakan adalah `top10s.csv`, yang berisi daftar lagu-lagu populer dari tahun 2010 hingga 2019. Dataset ini mencakup berbagai fitur audio yang diperoleh dari platform streaming seperti Spotify.
-
-Beberapa variabel dalam dataset:
+Dataset ini mencakup berbagai fitur audio yang diperoleh dari platform streaming seperti Spotify. Beberapa variabel dalam dataset:
 
 - `title`: judul lagu
 - `artist`: nama artis
@@ -43,10 +45,24 @@ Beberapa variabel dalam dataset:
 - `dur`: durasi lagu dalam detik
 - `acous`, `spch`, `pop`: fitur-fitur audio tambahan
 
+### Exploratory Data Analysis
+EDA dilakukan untuk memahami distribusi data dan hubungan antar fitur, serta menentukan langkah preprocessing yang sesuai.
+
+- Distribusi Lagu per Tahun
+Visualisasi ini menunjukkan jumlah lagu populer yang tercatat dalam dataset berdasarkan tahun rilisnya.
+- Genre Terpopuler
+Berikut ini adalah 10 genre terpopuler berdasarkan frekuensi kemunculannya dalam dataset.
+- Korelasi Antar Fitur Numerik
+Korelasi antar fitur membantu dalam memahami hubungan antar variabel. Misalnya, terdapat korelasi positif antara bpm dan nrgy.
+- Distribusi Fitur Numerik
+Distribusi fitur seperti spch dan acous memiliki banyak outlier, sehingga normalisasi diperlukan sebelum menghitung kemiripan antar lagu.
+
 ## Data Preparation
 
 Langkah-langkah yang dilakukan:
 
+- Menghapus kolom `Unnamed: 0`
+- Mengubah nama kolm ke huruf kecil
 - Melakukan normalisasi pada fitur numerik menggunakan `MinMaxScaler` agar berada dalam skala yang seragam (0–1).
 - Menyiapkan subset fitur numerik (`bpm`, `nrgy`, `dnce`, `val`, `dur`, `acous`, `spch`, `pop`) sebagai dasar penghitungan kemiripan antar lagu.
 
