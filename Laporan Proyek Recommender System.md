@@ -28,10 +28,11 @@ Proyek ini bertujuan membangun sistem rekomendasi lagu berdasarkan kemiripan fit
 - Dataset Top Spotify songs from 2010-2019-BY YEAR (https://www.kaggle.com/datasets/leonardopena/top-spotify-songs-from-20102019-by-year?select=top10s.csv)
 - Dataset yang digunakan adalah `top10s.csv`, yang berisi daftar lagu-lagu populer dari tahun 2010 hingga 2019.
 - Jumlah data: Dataset terdiri dari 603 baris dan 15 kolom
-- tidak terdapat missing values, data duplikat
+- tidak terdapat missing values ataupun data duplikat
 
 Dataset ini mencakup berbagai fitur audio yang diperoleh dari platform streaming seperti Spotify. Beberapa variabel dalam dataset:
 
+- `Unnamed: 0` : kolom nomor
 - `title`: judul lagu
 - `artist`: nama artis
 - `top genre`: genre utama
@@ -50,23 +51,18 @@ EDA dilakukan untuk memahami distribusi data dan hubungan antar fitur, serta men
 
 - Distribusi Lagu per Tahun
 Visualisasi ini menunjukkan jumlah lagu populer yang tercatat dalam dataset berdasarkan tahun rilisnya.
-- Genre Terpopuler
-Berikut ini adalah 10 genre terpopuler berdasarkan frekuensi kemunculannya dalam dataset.
-- Korelasi Antar Fitur Numerik
-Korelasi antar fitur membantu dalam memahami hubungan antar variabel. Misalnya, terdapat korelasi positif antara bpm dan nrgy.
-- Distribusi Fitur Numerik
-Distribusi fitur seperti spch dan acous memiliki banyak outlier, sehingga normalisasi diperlukan sebelum menghitung kemiripan antar lagu.
+- 10 Genre Terpopuler
+Visualisasi menggunakan barplot untuk menunjukkan 10 genre terpopuler berdasarkan frekuensi kemunculannya dalam dataset.
+- Korelasi Antar Fitur Numerik Lagu
+Korelasi antar fitur menggunakan heatmap membantu untuk memahami hubungan antar variabel dalam lagu. Contohnya, terdapat korelasi positif antara `bpm` dan `nrgy`, yang menunjukkan bahwa lagu dengan tempo cepat cenderung memiliki energi yang lebih tinggi. Selain itu, terdapat korelasi positif antara `val` dan `dnce`, yang berarti lagu yang enak untuk berdansa biasanya memiliki suasana yang lebih ceria. Sementara itu, korelasi negatif antara `nrgy` dan `acous` mengindikasikan bahwa lagu akustik cenderung memiliki energi yang lebih rendah. Secara keseluruhan, korelasi antar fitur tidak terlalu tinggi, sehingga semua fitur tetap bisa digunakan karena memberikan informasi yang berbeda satu sama lain.
 
 ## Data Preparation
 
 Langkah-langkah yang dilakukan:
-
 - Menghapus kolom `Unnamed: 0`
-- Mengubah nama kolm ke huruf kecil
+- Mengubah nama kolom ke huruf kecil
 - Melakukan normalisasi pada fitur numerik menggunakan `MinMaxScaler` agar berada dalam skala yang seragam (0–1).
 - Menyiapkan subset fitur numerik (`bpm`, `nrgy`, `dnce`, `val`, `dur`, `acous`, `spch`, `pop`) sebagai dasar penghitungan kemiripan antar lagu.
-
-Normalisasi penting agar tidak ada fitur yang mendominasi dalam penghitungan similarity.
 
 ## Modeling
 
