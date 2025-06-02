@@ -44,7 +44,9 @@ Dataset ini mencakup berbagai fitur audio yang diperoleh dari platform streaming
 - `live`: live performance score
 - `val`: valence (positivitas lagu)
 - `dur`: durasi lagu dalam detik
-- `acous`, `spch`, `pop`: fitur-fitur audio tambahan
+- `acous`: acousticness
+- `spch`: speechiness
+- `pop`: popularity
 
 ### Exploratory Data Analysis
 EDA dilakukan untuk memahami distribusi data dan hubungan antar fitur, serta menentukan langkah preprocessing yang sesuai.
@@ -62,7 +64,7 @@ Langkah-langkah yang dilakukan:
 - Menghapus kolom `Unnamed: 0`
 - Mengubah nama kolom ke huruf kecil
 - Melakukan normalisasi pada fitur numerik menggunakan `MinMaxScaler` agar berada dalam skala yang seragam (0–1).
-- Menyiapkan subset fitur numerik (`bpm`, `nrgy`, `dnce`, `val`, `dur`, `acous`, `spch`, `pop`) sebagai dasar penghitungan kemiripan antar lagu.
+- Menyiapkan subset fitur numerik (`bpm`, `nrgy`, `dnce`, `val`, `dur`, `acous`, `spch`, `live`) sebagai dasar penghitungan kemiripan antar lagu.
 
 ## Modeling
 
@@ -81,6 +83,9 @@ Cara Kerja:
 - Lalu menghitung cosine similarity terhadap semua lagu lain di dataset.
 - Output: 10 lagu yang paling mirip dari segi karakteristik konten (energi, tempo, suasana, dll) — meskipun artis atau judulnya berbeda.
 
+Contoh Output:
+![image](https://github.com/user-attachments/assets/d1dc7414-39cc-4749-8ed8-a7dd75091ed5)
+
 Fungsi Rekomendasi berdasarkan genre:
 ```python
 def recommend_by_genre(genre, df, similarity_matrix, top_n=10):
@@ -90,6 +95,9 @@ Cara Kerja:
 - Kemudian mencari lagu-lagu lain yang mirip secara konten dengan lagu itu.
 - Cocok untuk menemukan lagu mirip dari genre favorit.
 
+Contoh Output:
+![image](https://github.com/user-attachments/assets/588a5dff-56db-497b-a5d9-c6dddbb9949f)
+
 Fungsi Rekomendasi berdasarkan artis:
 ```python
 def recommend_by_artist(artist, df, similarity_matrix, top_n=10):
@@ -98,3 +106,50 @@ Cara Kerja:
 - Sistem mengambil semua lagu dari artis yang dipilih, lalu menghitung rata-rata representasi kontennya.
 - Lalu sistem mencari lagu lain yang mirip dengan gaya keseluruhan artis tersebut.
 - Cocok untuk menemukan lagu mirip dengan “cita rasa” lagu-lagu seorang artis.
+
+Contoh Output:
+![image](https://github.com/user-attachments/assets/36a564ca-7a51-469e-af4b-445bce191cdb)
+
+## Evaluasi
+Untuk mengevaluasi performa sistem rekomendasi berbasis konten, dilakukan simulasi **precision@10** terhadap 3 aspek utama:
+
+1. **Genre (Top Genre)**
+2. **Artis**
+3. **BPM (Beat Per Minute)**
+
+Evaluasi dilakukan dengan mengambil 20 lagu secara acak sebagai query, lalu dihitung proporsi dari 10 rekomendasi teratas yang memiliki karakteristik serupa.
+
+### 1. Precision Berdasarkan Artis
+
+Evaluasi ini mengukur seberapa sering rekomendasi berasal dari artis yang sama.
+
+- **Rata-rata Precision@10**: **0.05**
+
+📌 *Insight*: Rekomendasi dari artis yang sama sangat rendah, yaitu hanya sekitar 5%. Ini menunjukkan bahwa model lebih menekankan kemiripan dari segi fitur lagu (konten), bukan identitas artis. Hasil ini juga mencerminkan kemampuan sistem untuk memberikan rekomendasi lintas artis, yang bisa membantu dalam diversifikasi lagu bagi pengguna.
+
+---
+
+### 2. Precision Berdasarkan Genre
+
+Rekomendasi dianggap relevan jika lagu yang direkomendasikan memiliki genre yang sama dengan lagu input.
+
+- **Rata-rata Precision@10**: **0.57**  
+
+📌 *Insight*: Sistem cukup baik dalam mengelompokkan lagu berdasarkan genre. Hal ini menunjukkan bahwa fitur numerik seperti `bpm`, `val`, dan `nrgy` dapat menangkap karakteristik umum dari genre yang sama.
+
+---
+
+### 3. Precision Berdasarkan BPM
+
+Rekomendasi dianggap relevan jika BPM-nya dalam rentang ±5 dari lagu input.
+
+- **Rata-rata Precision@10**: **0.33**
+
+📌 *Insight*: Sekitar 33% rekomendasi memiliki tempo yang sangat mirip. Meskipun tidak terlalu tinggi, ini masih menunjukkan bahwa tempo merupakan salah satu fitur yang ikut mempengaruhi hasil rekomendasi. Namun, fitur lain seperti energi (`nrgy`) dan danceability (`dnce`) kemungkinan berkontribusi lebih besar pada kemiripan yang dihitung.
+
+---
+
+### 🧠 Kesimpulan Evaluasi
+
+- Sistem content-based ini cukup efektif dalam mengenali genre dan sebagian besar karakteristik musikal dari lagu.
+- Sistem cocok untuk digunakan dalam skenario *“temukan lagu dengan suasana/karakter mirip”*, bukan *“temukan lagu lain dari artis ini”*.
